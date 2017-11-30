@@ -6,8 +6,14 @@ import DevTools from './DevTools';
 
 render(
     <Provider store={store}>
-        <h1>Inicjalizacja projektu</h1>
-        <DevTools />
+        <div>
+          <h1>Inicjalizacja projektu</h1>
+          <DevTools />
+        </div>
+
     </Provider>,
     document.getElementById('root')
 );
+
+
+//provider może dostać tylko jeden element, dlatego jest div.
