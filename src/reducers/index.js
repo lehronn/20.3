@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import countriesReducer  from './countries-reducer';
+import styles from '../country.css';
 
 const reducers = combineReducers({
     countriesReducer

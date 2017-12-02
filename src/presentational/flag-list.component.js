@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import CountryFlag from './flag.component';
+import CountryFlag from '../presentational/flag.component';
 
 const CountryFlagList = (props) => (
     <div className="countries-list">
@@ -10,6 +10,7 @@ const CountryFlagList = (props) => (
                     <Link className='logo' to={'countries/country/' + country.id}>
                         <CountryFlag country={country} />
                     </Link>
+                    <button onClick={props.deleteCountry.bind(null, country.id)}>DELETE</button>
                 </div>
             )
         })}
@@ -34,3 +35,13 @@ export default CountryFlagList;
 
 // country to iterator. W każdym kolejnym cyklu iteracyjnym
 // przyjmuje on wartość następnego obiektu opisującego państwo.
+
+// Najważniejszą rzeczą przy usuwaniu kraju z listy jest przypisanie
+// do eventu onClick metody deleteCountry przesłanej za pomocą propsów.
+// Funkcja ta przyjmuje jeden parametr, ale wywołanie jej przy pomocy
+// użycia metody bind zmusza nas do przekazania dodatkowego parametru
+// jakim jest context, pod który będzie w tej funkcji wskazywać słowo
+// kluczowe this. Nie interesuje on nas w tym przypadku, więc możemy
+// ustawić go na wartość null. Dla nas najważniejsze jest, aby przekazać
+// odpowiednio id klikniętego państwa, dlatego drugi argument ustawiamy
+// na wartość country.id.
