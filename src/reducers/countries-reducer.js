@@ -1,9 +1,10 @@
-import { GET_COUNTRIES, GET_COUNTRY  } from '../actions/actions-countries';
+import { GET_COUNTRIES, GET_COUNTRY, SEARCH_COUNTRIES } from '../actions/actions-countries';
 import countriesData from '../data/countries.json';
 
 const initialState = {
   countries: countriesData,
-  selectedCountry: {}
+  selectedCountry: {},
+  visibleCountries: []
 };
 
 const countriesReducer = function (state = initialState, action) {
@@ -14,7 +15,11 @@ const countriesReducer = function (state = initialState, action) {
     case GET_COUNTRY:
       const selectedCountry = state.countries.find(country => country.id===parseInt(action.id));
       return Object.assign({}, state, {selectedCountry});
-  }
+
+    case SEARCH_COUNTRIES:
+      const foundCountries = state.countries.filter(country => country.name.toLowerCase().includes(action.searchText.toLowerCase()));
+      return Object.assign({}, state, {visibleCountries: foundCountries});
+      }
 
   return state;
 };
@@ -44,7 +49,7 @@ export default countriesReducer;
 // typu akcji zostanie zwrócony obecny stan, czyli
 // po prostu nie wykonamy żadnej zmiany.
 
-// Po pierwsze, nie mutujemy stanu. Dzięki metodzie Object.assign,
+// Po pierwsze, nie mutujemy (modyfikujemy) stanu. Dzięki metodzie Object.assign,
 // tworzymy jego kopię. Jako pierwszy argument, metoda przyjmuje
 // obiekt, do którego będą dołączane kolejne właściwości (stąd {},
 // ponieważ chcemy dodawać nowe właściwości do zupełnie nowego obiektu).
@@ -65,3 +70,15 @@ export default countriesReducer;
 // action. Następnie znaleziona wartość zostaje przypisana do nowo
 // utworzonego stanu obiektu i zwracana, aby nie mutować oryginalnego
 // stanu.
+
+// Algorytm wyszukiwania państwa po wpisanej frazie działa następująco -
+// opiera się on na zasadzie przeszukiwania, czy w stringu występuje
+// wskazany substring. Na początek zamieniamy wszystkie znaki w nazwie
+// państwa na małe litery (country.name.toLowerCase()), a następnie za
+// pomocą metody includes sprawdzamy, czy zawiera ona w sobie wyszukiwany
+// ciąg znaków (action.searchText.toLowerCase()) również sprowadzony do
+// małych liter. Metoda filter odpowiedzialna jest za to, aby zapisać do
+// stałej foundCountries tylko te elementy, które spełnią opisany powyżej
+// warunek. Następnie tworzymy nowy obiekt za pomocą Object.assign() i
+// przypisujemy do niego poprzedni stan aplikacji, w którym wartość pola
+// visibleCountries będzie równa foundCountries.
